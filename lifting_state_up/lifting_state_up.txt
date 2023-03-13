@@ -1,0 +1,127 @@
+One of the most common use cases for lifting state up in React is when dealing with forms. Let's say you have a form component that allows a user to enter their name, email, and password. Instead of storing this form data in the component state, you can lift the state up to a parent component, where it can be used by other child components as well.
+
+Here's an example:
+
+javascript
+Copy code
+import React, { useState } from "react";
+
+function Form(props) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.onSubmit({ name, email, password });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </label>
+      <label>
+        Password:
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+
+function ParentComponent() {
+  const [formData, setFormData] = useState({});
+
+  const handleFormSubmit = (data) => {
+    setFormData(data);
+  };
+
+  return (
+    <div>
+      <h1>Register</h1>
+      <Form onSubmit={handleFormSubmit} />
+      <p>FormData: {JSON.stringify(formData)}</p>
+    </div>
+  );
+}
+In this example, we have a Form component that contains the form fields and a submit button. When the user submits the form, the handleSubmit function is called, which calls the onSubmit callback function passed in via props with the form data as an object.
+
+The ParentComponent contains the Form component and a paragraph that displays the form data. When the form is submitted, the handleFormSubmit function is called, which sets the formData state variable with the submitted form data.
+
+By lifting the state up to the ParentComponent, we can easily access the form data from other child components or pass it down as props to other components.
+
+
+
+
+aaarputharaj@gmail.com
+Lifting State Up with real time example in react js
+Sure, here's an example of lifting state up in a real-time chat application using React:
+
+javascript
+Copy code
+import React, { useState } from "react";
+
+function ChatRoom() {
+  const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState("");
+
+  const handleMessageChange = (event) => {
+    setCurrentMessage(event.target.value);
+  };
+
+  const handleSendMessage = () => {
+    const newMessage = {
+      text: currentMessage,
+      timestamp: new Date().toISOString(),
+    };
+    setMessages([...messages, newMessage]);
+    setCurrentMessage("");
+  };
+
+  return (
+    <div>
+      <h1>Chat Room</h1>
+      <div>
+        {messages.map((message, index) => (
+          <div key={index}>
+            <span>{message.timestamp}: </span>
+            <span>{message.text}</span>
+          </div>
+        ))}
+      </div>
+      <div>
+        <input
+          type="text"
+          value={currentMessage}
+          onChange={handleMessageChange}
+        />
+        <button onClick={handleSendMessage}>Send</button>
+      </div>
+    </div>
+  );
+}
+In this example, we have a ChatRoom component that keeps track of the list of messages in the chat and the current message being typed by the user.
+
+The handleMessageChange function is called whenever the user types in the input field, and updates the currentMessage state variable.
+
+The handleSendMessage function is called when the user clicks the "Send" button. It creates a new message object with the current message and a timestamp, and adds it to the messages array using the spread operator. It also resets the currentMessage state variable to an empty string.
+
+By lifting the state up to the ChatRoom component, we can easily share the list of messages and the current message state between multiple child components, such as the message list and the message input field. This allows the chat room to update in real-time as new messages are sent and received.

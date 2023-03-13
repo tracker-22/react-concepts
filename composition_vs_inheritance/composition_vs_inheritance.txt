@@ -1,0 +1,75 @@
+how you can use composition and inheritance in functional components in React:
+
+Composition Example:
+
+javascript
+Copy code
+import React from "react";
+
+function Button(props) {
+  return <button style={{ backgroundColor: props.color }}>{props.text}</button>;
+}
+
+function Dialog(props) {
+  return (
+    <div>
+      <h2>{props.title}</h2>
+      <p>{props.message}</p>
+      {props.children}
+    </div>
+  );
+}
+
+function ConfirmationDialog(props) {
+  return (
+    <Dialog title={props.title} message={props.message}>
+      <Button text={props.confirmText} color="green" onClick={props.onConfirm} />
+      <Button text={props.cancelText} color="red" onClick={props.onCancel} />
+    </Dialog>
+  );
+}
+This example is very similar to the one provided in the previous answer, but with functional components instead of class components. The Button and Dialog components are simple functional components that take in props and return a JSX element. The ConfirmationDialog component is created using composition, by wrapping the Dialog component with two Button components.
+
+Inheritance Example:
+
+javascript
+Copy code
+import React, { useState } from "react";
+
+class Animal {
+  constructor() {
+    this.state = { isAlive: true };
+  }
+
+  die() {
+    this.setState({ isAlive: false });
+  }
+
+  render() {
+    return <div>{this.state.isAlive ? "I am alive!" : "I am dead."}</div>;
+  }
+}
+
+function useCat() {
+  const [hasHair, setHasHair] = useState(true);
+
+  function purr() {
+    console.log("Purr...");
+  }
+
+  return { hasHair, setHasHair, purr };
+}
+
+function Cat(props) {
+  const { hasHair, setHasHair, purr } = useCat();
+
+  return (
+    <div>
+      <Animal />
+      <div>{hasHair ? "I have hair!" : "I am hairless."}</div>
+    </div>
+  );
+}
+In this example, we have an Animal class and a Cat function component that uses a custom hook called useCat. The Animal class has a die method that sets the isAlive state variable to false, and a render method that displays whether the animal is alive or dead. The useCat hook defines a hasHair state variable and a purr function. The Cat component uses the Animal class and the useCat hook to display whether the cat is alive or dead, and whether it has hair or not.
+
+In summary, composition and inheritance work similarly in both functional and class components in React. However, there are some differences, such as the way state is managed in functional components using hooks, which may influence which technique you choose to use in your components.

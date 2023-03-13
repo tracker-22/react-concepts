@@ -1,0 +1,14 @@
+import React from "react";
+
+interface IBankingDetails{
+  bankName: string;
+  bankAccountNumber: string;
+}
+
+export const BankingDetails= ({bankName , bankAccountNumber}: IBankingDetails) => {
+
+    return <>
+        <div>bankName: {bankName}</div>
+        <div>bankAccountNumber: {bankAccountNumber}</div>
+    </>
+}
